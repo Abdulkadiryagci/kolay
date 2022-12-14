@@ -21,8 +21,10 @@ class _KelimeDetayState extends State<KelimeDetay> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
+    Audio audio = Audio.load(widget.tumKelimeler[widget.pageIndex].kelimeSesi);
+    audio.play();
     pageController = PageController(
         initialPage: widget.pageIndex, keepPage: false, viewportFraction: 1);
 
@@ -36,7 +38,6 @@ class _KelimeDetayState extends State<KelimeDetay> {
   }
 
   setToSelectedIndex() {
-    
     setState(() {
       selectedPageIndex = widget.pageIndex;
     });
@@ -55,71 +56,78 @@ class _KelimeDetayState extends State<KelimeDetay> {
               Expanded(
                 child: PageView.builder(
                   controller: pageController,
+                  onPageChanged: (index) {
+                    Audio audio =
+                        Audio.load(widget.tumKelimeler[index].kelimeSesi);
+                    audio.play();
+                  },
                   itemCount: widget.tumKelimeler.length,
-                  itemBuilder: (context, index) => Expanded(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(6),
-                              child: Text(
-                                widget.tumKelimeler[index].kelimeAnlami,
-                                maxLines: 1,
-                                style: const TextStyle(
+                  itemBuilder: (context, index) {
+                    Audio audio =
+                        Audio.load(widget.tumKelimeler[index].kelimeSesi);
+                    return Expanded(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: Text(
+                                  widget.tumKelimeler[index].kelimeAnlami,
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 48,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(1),
+                                child: Image.asset(
+                                  "${widget.tumKelimeler[index].kelimeResmi}",
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.all(0),
+                                child: ListTile(
+                                    title: Text(
+                                  widget.tumKelimeler[index].kelimeAdi,
+                                  maxLines: 1,
+                                  style: myTextStyle.headline3,
+                                  textAlign: TextAlign.center,
+                                )),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                audio.play();
+                                setState(() {});
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.all(20),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 15),
+                                decoration: BoxDecoration(
                                     color: Colors.blue,
-                                    fontSize: 48,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: const Icon(
+                                  Icons.volume_up,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.all(1),
-                              child: Image.asset(
-                                "${widget.tumKelimeler[index].kelimeResmi}",
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(0),
-                              child: ListTile(
-                                  title: Text(
-                                widget.tumKelimeler[index].kelimeAdi,
-                                maxLines: 1,
-                                style: myTextStyle.headline3,
-                                textAlign: TextAlign.center,
-                              )),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Audio audio = Audio.load(
-                                  widget.tumKelimeler[index].kelimeSesi);
-                              audio.play();
-                              setState(() {});
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.all(20),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 15),
-                              decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: const Icon(
-                                Icons.volume_up,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                            ),
-                          ),
-                        ]),
-                  ),
+                          ]),
+                    );
+                  },
                 ),
               ),
               Padding(
