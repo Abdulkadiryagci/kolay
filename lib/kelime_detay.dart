@@ -25,9 +25,6 @@ class _KelimeDetayState extends State<KelimeDetay> {
 
     Audio audio = Audio.load(widget.tumKelimeler[widget.pageIndex].kelimeSesi);
     audio.play();
-
-
-    
     pageController = PageController(
         initialPage: widget.pageIndex, keepPage: false, viewportFraction: 1);
 
